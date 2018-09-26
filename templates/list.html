@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Websqlmap Scan List</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="/">Websqlmap</a>
+	</div>
+	<div>
+		<ul class="nav navbar-nav">
+			<li><a href="/scan/list">task list</a></li>
+			<li><a href="/scan/succ">successful tasks</a></li>
+		</ul>
+	</div>
+	</div>
+</nav>
+{#    自动刷新页面#}
+{#    <script language="JavaScript">#}
+{#        function myrefresh() {#}
+{#            window.location.reload();#}
+{#        }#}
+{#        setTimeout('myrefresh()', 5000); //指定5秒刷新一次#}
+{#        </script>#}
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>date</th>
+			<th>taskid</th>
+			<th>url</th>
+            <th>scan_status</th>
+            <th>data</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for data in cursor %}
+		<tr>
+			<td>{{ data[0] }}</td>
+			<td>{{ data[1] }}</td>
+			<td>{{ data[2] }}</td>
+            <td>{{ data[3] }}</td>
+            <td>{{ data[4] }}</td>
+{#            <td><button type="button" class="btn btn-danger">Delete</button></td>#}
+		</tr>
+    {% endfor %}
+	</tbody>
+</table>
+
+</body>
+</html>
