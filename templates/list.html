@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Websqlmap Scan List</title>
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<script src="/static/js/jquery-3.3.1.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -15,43 +15,79 @@
 	</div>
 	<div>
 		<ul class="nav navbar-nav">
+            <li><a href="/scan/newscan">create task</a></li>
 			<li><a href="/scan/list">task list</a></li>
 			<li><a href="/scan/succ">successful tasks</a></li>
 		</ul>
 	</div>
 	</div>
 </nav>
-{#    自动刷新页面#}
-{#    <script language="JavaScript">#}
-{#        function myrefresh() {#}
-{#            window.location.reload();#}
-{#        }#}
-{#        setTimeout('myrefresh()', 5000); //指定5秒刷新一次#}
-{#        </script>#}
-
-<table class="table table-striped">
+<script>
+    function getPayload(str){
+        var obj = JSON.parse(str);
+        return JSON.stringify(obj.data[1].value[0].data["1"].payload);
+    }
+</script>
+<table class="table table-striped" id = "list_table">
 	<thead>
 		<tr>
+            <td><input type="checkbox" name="test" id="all"></td>
 			<th>date</th>
 			<th>taskid</th>
 			<th>url</th>
             <th>scan_status</th>
-            <th>data</th>
+            <th>payload</th>
 		</tr>
 	</thead>
 	<tbody>
     {% for data in cursor %}
 		<tr>
+        <td><input type="checkbox" name="test"></td>
 			<td>{{ data[0] }}</td>
-			<td>{{ data[1] }}</td>
+			<td name="taskid">{{ data[1] }}</td>
 			<td>{{ data[2] }}</td>
             <td>{{ data[3] }}</td>
-            <td>{{ data[4] }}</td>
-{#            <td><button type="button" class="btn btn-danger">Delete</button></td>#}
-		</tr>
+            <td><div id="{{ data[1] }}"></div></td>
+            <script>$("#{{ data[1] }}").html(getPayload({{ data[4]|tojson }}));</script>
+        </tr>
     {% endfor %}
 	</tbody>
 </table>
+<input type="button" value="删除">
+
+
+
+
+
+<script type="text/javascript">
+      $(function() { //复选框删除
+        $('#all').on('click',function(){
+            if(this.checked) {
+                $("input[name='test']").attr('checked',true);
+            }else {
+                $("input[name='test']").attr('checked',false);
+            }
+        });
+     });
+</script>
+
+
+
+<script>
+$(function(){
+    $("input[type='button']").click(function() {
+
+        $("input[name='test']:checked").each(function() { // 遍历选中的checkbox
+            n = $(this).parents("tr").index()+1;  // 获取checkbox所在行的顺序
+            $("table#list_table").find("tr:eq("+n+")").remove();
+            row=$(this).parent("td").parent("tr");
+            taskid=row.find("[name='taskid']").html();
+            $.post("/scan/del", {taskid:taskid})
+        })
+    });
+});
+</script>
+
 
 </body>
 </html>

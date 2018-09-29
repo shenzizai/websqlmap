@@ -2,23 +2,25 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Bootstrap 实例 - 基本表单</title>
-	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>新建扫描任务</title>
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<form role="form" action="/scan/start" method="post">
+<form role="form" action="/scan/start" enctype="multipart/form-data" method="post" >
 	<div class="form-group">
-		<label for="name">url</label>
+		<label for="name">url</label><p class="help-block">你可以在这里输入url,每行一条</p>
 		<textarea class="form-control" rows="3" id="name" name="url"></textarea>
 	</div>
-    <button type="submit" class="btn btn-default">提交</button>
+	<div class="form-group">
+		<label for="inputfile">上传文件</label>
+        <p class="help-block">你可以在这里上传包含url的文本</p>
+		<input type="file" id="inputfile" name="file">
+	</div>
+	<button type="submit" class="btn btn-default">提交</button>
 </form>
-
-
 
 </body>
 </html>
-
